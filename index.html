@@ -20,7 +20,7 @@
 :root[data-theme=grey]{color-scheme:dark;--bg:#1c1c1e;--card:#2c2c2e;--tx:#f2f2f7;--mut:#a1a1a6;--sep:rgba(255,255,255,.16);--fill:rgba(255,255,255,.14);--segon:#48484a;--bar:rgba(28,28,30,.88);--tint:#ff9f0a;--ontint:#1c1c1e;--blue:#8ecbff;--hero:linear-gradient(180deg,#2c2c2e 0,#48484a 60%,#8e8e93 100%);--sun:linear-gradient(180deg,#f2f2f7,#c7c7cc 55%,#8e8e93);--stripe:#48484a;--m1:#ff9f0a;--m2:#ffd60a;--m3:#fff;--b1:#6e6e73;--b2:#3a3a3c;--glow:rgba(255,159,10,.18);--grid:rgba(255,255,255,.07)}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html{background:var(--bg)}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--tx);font:17px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;letter-spacing:-.01em;padding:env(safe-area-inset-top) 0 calc(90px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased}
+body{margin:0;min-height:100vh;min-height:100dvh;background:var(--bg);color:var(--tx);font:17px/1.3 -apple-system,BlinkMacSystemFont,"SF Pro Text","Helvetica Neue",sans-serif;letter-spacing:-.01em;padding:env(safe-area-inset-top) 0 calc(90px + env(safe-area-inset-bottom));-webkit-font-smoothing:antialiased}
 button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
 input,textarea{font:inherit;color:inherit}
 #app{max-width:520px;margin:0 auto;padding:8px 16px}
@@ -44,13 +44,18 @@ h3{margin:24px 16px 6px;font-size:13px;font-weight:400;color:var(--mut);text-tra
 .chips{display:flex;gap:8px;overflow-x:auto;padding:2px 0;scrollbar-width:none}.chips::-webkit-scrollbar{display:none}
 .chip{flex:none;background:var(--fill);border-radius:999px;padding:7px 14px;font-size:15px;white-space:nowrap}
 .chip.on{background:var(--tint);color:var(--ontint)}
-.hero{position:relative;height:410px;border-radius:26px;overflow:hidden;margin-top:12px;background:var(--hero)}
-.sun{position:absolute;left:50%;top:70px;width:270px;height:270px;margin-left:-135px;border-radius:50%;background:var(--sun);opacity:.85}
+.hero{position:relative;height:440px;border-radius:26px;overflow:hidden;margin-top:12px;background:var(--hero)}
+.sun{position:absolute;left:50%;top:112px;width:270px;height:270px;margin-left:-135px;border-radius:50%;background:var(--sun);opacity:.85}
 .sun::after{content:"";position:absolute;inset:52% 0 0;background:repeating-linear-gradient(180deg,transparent 0 8px,var(--stripe) 8px 12px);border-radius:0 0 135px 135px;opacity:.9}
-.hero svg{position:relative;width:100%;height:100%}
+.hero svg{position:absolute;left:0;top:56px;width:100%;height:calc(100% - 66px)}
 .hero .seg{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:150px;background:rgba(0,0,0,.45);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);color:#fff}
 .hero .seg .on{background:rgba(255,255,255,.28);box-shadow:none}
-.leg{position:absolute;bottom:10px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,.8)}
+.leg{text-align:center;font-size:12px;color:var(--mut);margin:8px 0 0}
+.ln{fill:none;stroke:rgba(255,255,255,.3);stroke-width:.7}
+html{-webkit-text-size-adjust:100%}
+button,input,textarea{touch-action:manipulation}
+.hero,nav,.chip,.seg{-webkit-user-select:none;user-select:none}
+body.lock{overflow:hidden}
 .base{fill:url(#bg);stroke:rgba(255,255,255,.3);stroke-width:.8}
 .mu{fill:rgba(255,255,255,.07);stroke:rgba(255,255,255,.32);stroke-width:.6;cursor:pointer;transition:fill .2s}
 .mu:active{opacity:.6}
@@ -69,7 +74,7 @@ nav svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;st
 nav .on{color:var(--tint)}
 #sheet{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:flex-end;z-index:9}
 #sheet.open{display:flex}
-#sb{width:100%;max-width:520px;margin:0 auto;background:var(--bg);border-radius:14px 14px 0 0;padding:8px 16px calc(24px + env(safe-area-inset-bottom));max-height:92vh;overflow:auto;animation:up .28s cubic-bezier(.2,.8,.2,1)}
+#sb{width:100%;max-width:520px;margin:0 auto;background:var(--bg);border-radius:14px 14px 0 0;padding:8px 16px calc(24px + env(safe-area-inset-bottom));max-height:92vh;max-height:92dvh;overflow:auto;overscroll-behavior:contain;animation:up .28s cubic-bezier(.2,.8,.2,1)}
 @keyframes up{from{transform:translateY(100%)}}
 @media(prefers-reduced-motion:reduce){#sb{animation:none}}
 .gr{width:36px;height:5px;border-radius:3px;background:var(--fill);margin:0 auto 8px}
@@ -132,12 +137,13 @@ lowback:['Lower back',['Deadlift','Back Extension','Good Morning']],
 glutes:['Glutes',['Hip Thrust','Romanian Deadlift','Glute Bridge','Bulgarian Split Squat']],
 hams:['Hamstrings',['Leg Curl','Romanian Deadlift','Nordic Curl']]};
 /* body art: right half only, mirrored in code */
-const FR={shoulders:'M138 66C152 63 163 73 164 90C160 97 153 97 149 90C147 80 144 74 138 72Z',chest:'M102 72C114 70 128 72 140 77C142 91 134 103 120 105C112 105 106 101 102 98Z',biceps:'M149 98C157 100 162 112 161 128C157 134 151 132 150 124C149 114 148 106 149 98Z',forearms:'M153 140C161 142 169 156 173 174C169 178 164 174 161 166C157 158 154 150 153 140Z',abs:'M102 108L116 108Q118 113 116 121L102 121Z M102 124L116 124L116 136L102 136Z M102 139L115 139L114 153L102 153Z M102 156L112 156L110 170Q104 174 102 172Z',obliques:'M120 107C128 107 133 117 132 135C131 149 130 158 126 166L118 162C120 146 121 124 120 107Z',quads:'M104 192C118 190 132 190 137 196C141 218 137 246 131 264C123 270 113 268 109 260C105 238 103 214 104 192Z',calves:'M110 288C118 283 128 287 129 303C128 319 125 335 122 347C116 349 112 341 111 327C110 315 109 301 110 288Z'};
-const BK={lats:'M104 100C120 92 134 86 140 92C140 106 134 126 126 146C116 150 108 146 104 142Z',traps:'M101 50C110 54 124 60 138 68C134 80 120 94 101 110Z',shoulders:FR.shoulders,triceps:FR.biceps,forearms:FR.forearms,lowback:'M102 144C112 146 122 148 126 152L126 166C116 168 108 166 102 164Z',glutes:'M102 168C116 164 134 168 138 186C138 200 126 208 114 206C108 205 103 200 102 196Z',hams:'M104 210C118 208 132 210 137 218C139 238 135 254 129 266C121 272 111 270 109 262C105 244 103 226 104 210Z',calves:'M110 280C120 276 130 282 130 300C128 318 125 334 122 347C116 349 112 339 110 323C108 307 108 291 110 280Z'};
-const TM='M100 56C112 57 128 60 140 70C144 84 142 98 138 112C134 126 132 140 133 154C134 166 137 176 138 186L100 190Z';
-const TF='M100 58C110 60 122 62 132 70C135 82 134 96 131 108C128 120 124 134 124 148C124 162 135 174 142 190L100 192Z';
-const ARM='M139 66C154 63 164 74 165 92C166 110 169 126 171 142C173 156 176 168 176 178C176 185 169 187 166 182C162 172 158 160 156 148C153 132 150 120 146 108C142 96 138 84 139 66Z';
-const LEG='M100 188L138 184C142 212 140 238 135 260C132 278 130 296 129 312C128 328 128 344 128 356C128 364 118 368 111 366C107 360 108 340 108 318C107 296 104 270 102 246C101 226 100 208 100 188Z';
+const SM='M100 40L108 40C108 47 109 51 114 54C124 57 140 59 150 64C158 67 163 74 163 84C164 100 166 116 169 130C171 146 175 162 178 178C180 186 182 194 182 200C181 206 176 207 174 201C171 192 167 182 164 172C161 160 157 146 154 134C152 122 150 112 146 104L141 107C138 120 133 136 132 150C131 162 135 176 138 190C140 200 141 214 140 230C139 250 137 268 134 284C132 296 133 306 132 316C131 330 128 346 125 362C126 372 130 378 131 386L112 386C110 380 111 370 112 362C109 346 107 330 107 316C106 304 106 294 106 284C105 266 104 244 103 224C102 216 100 210 100 206Z';
+const SF='M100 40L107 40C107 47 108 51 112 54C121 57 134 59 142 63C149 66 153 73 153 83C154 98 156 112 158 126C160 142 163 158 166 174C168 184 170 192 170 198C169 204 164 205 162 199C159 190 156 180 153 170C150 158 147 144 145 132C143 120 142 110 141 102L137 106C134 118 128 134 126 148C126 160 136 172 143 190C145 200 143 214 141 230C139 250 137 268 134 284C132 296 133 306 132 316C131 330 128 346 125 362C126 372 130 378 131 386L112 386C110 380 111 370 112 362C109 346 107 330 107 316C106 304 106 294 106 284C105 266 104 244 103 224C102 216 100 210 100 206Z';
+const DELT='M138 64C150 62 162 70 164 84C164 92 162 100 159 106C152 104 147 98 145 90C143 80 141 72 138 66Z';
+const FOREARM='M156 138C162 140 170 154 175 174C172 178 168 177 166 172C162 162 158 152 156 138Z';
+const FR={shoulders:DELT,chest:'M102 71C113 68 128 70 139 77C141 88 139 99 132 103C122 107 110 106 102 102Z',biceps:'M153 108C159 109 165 116 166 128C165 134 161 137 157 135C154 126 152 117 153 108Z',forearms:FOREARM,abs:'M102 108L117 108C119 112 119 119 117 123L102 123Z M102 126L118 126C119 131 119 137 117 141L102 141Z M102 144L117 144C118 150 117 156 115 160L102 160Z M102 163L114 163C114 170 112 177 108 182L102 186Z',obliques:'M120 108C127 110 131 122 131 138C131 150 131 158 130 166L120 163C121 150 121 126 120 108Z',quads:'M104 196C116 192 132 192 139 200C142 222 140 248 134 270C128 278 116 278 110 270C106 250 104 224 104 196Z',calves:'M108 290C116 286 128 290 132 304C131 322 128 340 124 358C118 360 114 356 112 346C109 330 108 310 108 290Z'};
+const BK={lats:'M104 104C120 96 136 88 141 94C142 108 138 128 130 148C120 154 110 150 104 146Z',traps:'M102 50C108 52 114 54 118 56C128 59 138 62 142 66C138 80 120 96 102 112Z',shoulders:DELT,triceps:'M153 106C160 107 166 114 167 128C166 135 161 138 157 136C153 126 152 116 153 106Z',forearms:FOREARM,lowback:'M102 150C112 152 122 154 128 158L130 172C120 176 110 174 102 174Z',glutes:'M102 178C116 174 134 178 139 192C140 204 130 214 116 214C108 214 103 210 102 206Z',hams:'M104 216C118 216 134 216 139 224C141 244 138 262 133 276C126 282 114 282 110 274C105 256 103 236 104 216Z',calves:'M108 286C118 282 132 288 133 306C132 324 128 342 124 358C118 360 113 356 112 346C108 330 106 304 108 286Z'};
+const FSC={chest:.85,shoulders:.85,biceps:.85,triceps:.85,forearms:.85,traps:.85,lats:.85,abs:.84,obliques:.84,lowback:.84};
 
 /* foods: name|serving|kcal|protein */
 const DB=`#Meat
@@ -366,14 +372,14 @@ let tab='today',view='f',planDay=new Date().getDay(),planSeg='week',fdate=today(
 
 /* ---------- body ---------- */
 function body(sex,v,c,plm){
- const f=sex==='f',M=v==='f'?FR:BK,tr=f?'translate(8 0) scale(.92 1)':'';
+ const f=sex==='f',M=v==='f'?FR:BK,sil=f?SF:SM;
  const mir=(d,a)=>`<path d="${d}" ${a}/><path d="${d}" transform="translate(200 0) scale(-1 1)" ${a}/>`;
- let s=`<svg viewBox="0 0 200 375" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--b1)"/><stop offset="1" style="stop-color:var(--b2)"/></linearGradient><filter id="g" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
- s+=`<ellipse cx="100" cy="27" rx="14" ry="17" class="base"/><path d="M93 40L93 56L107 56L107 40Z" class="base"/>`;
- s+=`<g transform="${tr}">${mir(ARM,'class="base"')}</g>`+mir(f?TF:TM,'class="base"')+mir(LEG,'class="base"');
- s+=`<g transform="${tr}">`;
- for(const k in M){const n=c[k]||0,l=n?Math.min(3,Math.ceil(n/3)):0,cl=l?'l'+l:plm.has(k)?'pl':'';s+=mir(M[k],`class="mu ${cl}" data-m="${k}"`)}
- return s+'</g></svg>';
+ let s=`<svg viewBox="0 0 200 392" preserveAspectRatio="xMidYMid meet"><defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--b1)"/><stop offset="1" style="stop-color:var(--b2)"/></linearGradient><filter id="g" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="2.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+ s+=mir(sil,'fill="url(#bg)" stroke="rgba(255,255,255,.35)" stroke-width="1.6"')+mir(sil,'fill="url(#bg)"');
+ s+=`<ellipse cx="100" cy="22" rx="13" ry="17" fill="url(#bg)" stroke="rgba(255,255,255,.35)" stroke-width=".8"/>`;
+ if(v==='f')s+=mir('M101 64C112 62 126 63 140 69','class="ln"');
+ for(const k in M){const sc=f?(FSC[k]||1):1,n=c[k]||0,l=n?Math.min(3,Math.ceil(n/3)):0,cl=l?'l'+l:plm.has(k)?'pl':'';s+=`<g transform="translate(${(100*(1-sc)).toFixed(1)} 0) scale(${sc} 1)">`+mir(M[k],`class="mu ${cl}" data-m="${k}"`)+'</g>'}
+ return s+'</svg>';
 }
 function streak(p){const days=new Set(p.logs.map(l=>l.d));let d=new Date(),n=0;if(!days.has(dstr(d)))d.setDate(d.getDate()-1);while(days.has(dstr(d))){n++;d.setDate(d.getDate()-1)}return n}
 const dayPlan=(p,wd)=>p.plan[wd]||{ms:[],ex:[]};
@@ -391,7 +397,8 @@ function viewToday(){
  return `<div class="lt"><div><div class="cap">${new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'})}</div><h1>${esc(p.name)}</h1></div><button class="plus" aria-label="Log exercise" onclick="openLog({})">+</button></div>
  <div class="hero"><div class="sun"></div>${body(p.sex,view,c,plm)}
  <div class="seg"><button class="${view==='f'?'on':''}" onclick="view='f';render()">Front</button><button class="${view==='b'?'on':''}" onclick="view='b';render()">Back</button></div>
- <div class="leg">Tap a muscle to log · dashed = planned · glowing = worked</div></div>
+ </div>
+ <div class="leg">Tap a muscle to log it · dashed = planned · glowing = worked</div>
  <div class="stats"><div class="stat"><b>${sets}</b><span>Sets today</span></div><div class="stat"><b>${streak(p)}</b><span>Day streak</span></div><div class="stat"><b>${Math.max(0,g.k-eaten)}</b><span>kcal left</span></div></div>
  <h3>Today's plan · ${planName(pl)}</h3>
  ${pl.ex.length?`<div class="grp">${pl.ex.map(x=>{const d=logs.some(l=>l.e===x.e);return `<button class="li" onclick='openLog({m:"${x.m}",e:${JSON.stringify(x.e)},sets:${JSON.stringify(x.sets)}})'><div class="chk ${d?'d':''}">${d?'✓':''}</div><div class="g"><b>${esc(x.e)}</b><small>${MU[x.m][0]} · ${setTxt(x.sets)}</small></div><span class="tint">${d?'Again':'Start'}</span></button>`}).join('')}</div>`:`<div class="grp"><div class="empty">${pl.ms.length?'Add exercises to this day in the Plan tab.':'Nothing planned. Plan this day in the Plan tab, or tap a muscle to log anything.'}</div></div>`}
@@ -404,7 +411,7 @@ function lastOf(e){const l=[...P().logs].reverse().find(x=>x.e===e);return l?clo
 function openLog(o){
  LG=Object.assign({step:'pick',m:'chest',e:'',sets:[],id:null,mode:'log',idx:null},o);
  if(LG.e){LG.step='sets';LG.direct=1;if(!LG.sets.length)LG.sets=lastOf(LG.e)||[{r:10,k:0},{r:10,k:0},{r:10,k:0}]}
- drawLog();document.getElementById('sheet').classList.add('open');
+ drawLog();showSheet();
 }
 function editLog(id){const l=P().logs.find(x=>x.id===id);openLog({m:l.m,e:l.e,sets:clone(l.sets),id})}
 function pickEx(e){LG.e=e;LG.sets=lastOf(e)||[{r:10,k:0},{r:10,k:0},{r:10,k:0}];LG.step='sets';drawLog()}
@@ -438,7 +445,8 @@ function saveLog(){
  save();closeSheet();render();
 }
 function delLog(){const p=P();p.logs=p.logs.filter(l=>l.id!==LG.id);save();closeSheet();render()}
-function closeSheet(){document.getElementById('sheet').classList.remove('open');LG=null;FS=null}
+function showSheet(){document.getElementById('sheet').classList.add('open');document.body.classList.add('lock')}
+function closeSheet(){document.getElementById('sheet').classList.remove('open');document.body.classList.remove('lock');LG=null;FS=null}
 
 /* ---------- Plan & calendar ---------- */
 function viewPlan(){
@@ -485,7 +493,7 @@ function viewFood(){
 }
 function fMove(d){const x=new Date(fdate+'T12:00');x.setDate(x.getDate()+d);fdate=dstr(x);render()}
 function rmFood(id){const p=P();p.food[fdate]=(p.food[fdate]||[]).filter(e=>e.id!==id);save();render()}
-function openFood(){const h=new Date().getHours();FS={q:'',cat:'All',f:null,qty:1,meal:h<11?'Breakfast':h<16?'Lunch':h<21?'Dinner':'Snacks'};drawFood();document.getElementById('sheet').classList.add('open')}
+function openFood(){const h=new Date().getHours();FS={q:'',cat:'All',f:null,qty:1,meal:h<11?'Breakfast':h<16?'Lunch':h<21?'Dinner':'Snacks'};drawFood();showSheet()}
 const allFoods=()=>P().cf.concat(FOODS);
 function drawFood(){
  const b=document.getElementById('sb');
